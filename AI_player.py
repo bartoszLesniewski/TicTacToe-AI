@@ -2,23 +2,28 @@ import copy
 import math
 import random
 
+from AI_type import AI_type
 from heuristics import heuristic_function
-from human_player import Player
+from player import Player
 
 
 class AIPlayer(Player):
-    def __init__(self, board, token, level):
+    def __init__(self, board, token, ai_type, max_depth):
         super().__init__(board, token)
-        self.level = level
+        self.ai_type = ai_type
+        self.max_depth = max_depth
 
     def move(self):
-        if self.level == "EASY":
+        move = None
+        if self.ai_type == AI_type.RANDOM:
             possible_moves = self.board.get_possible_moves()
-            random_move = random.choice(possible_moves)
-            self.make_move(random_move)
-        else:
-            move = self.minimax(self.board, 1, True)[1]
-            self.make_move(move)
+            move = random.choice(possible_moves)
+        elif self.ai_type == AI_type.MINIMAX:
+            move = self.minimax(self.board, self.max_depth)[1]
+        elif self.ai_type == AI_type.ALPHA_BETA:
+            move = self.minimax(self.board, self.max_depth)[1]
+
+        self.make_move(move)
 
     def minimax(self, board, depth=2, maximizingPlayer=True):
         result = board.check_for_end()
