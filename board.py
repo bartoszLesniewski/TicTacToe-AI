@@ -50,33 +50,24 @@ class Board:
         if result[0]:
             return result
 
-        # check for win in diagonals under the main diagonal (for larger sizes)
+        # check for win in diagonals under and above the main diagonal (for larger sizes)
         for i in range(1, self.size):
             if self.size - i < 3:
                 break
 
             col = 0
-            diagonal = []
+            diagonal_under = []
+            diagonal_above = []
             for j in range(i, self.size):
-                diagonal.append(self.states[j][col])
+                diagonal_under.append(self.states[j][col])
+                diagonal_above.append(self.states[col][j])
                 col += 1
 
-            result = self.check_states(diagonal)
+            result = self.check_states(diagonal_under)
             if result[0]:
                 return result
 
-        # check for win in diagonals above the main diagonal (for larger sizes)
-        for i in range(1, self.size):
-            if self.size - i < 3:
-                break
-
-            col = 0
-            diagonal = []
-            for j in range(i, self.size):
-                diagonal.append(self.states[col][j])
-                col += 1
-
-            result = self.check_states(diagonal)
+            result = self.check_states(diagonal_above)
             if result[0]:
                 return result
 

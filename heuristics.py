@@ -1,16 +1,16 @@
-# works propoerly only for 3x3 board, for larger sizes always returns 0 or -100
-def calculate_score(row, score, token, opponent_token):
-    if row.count(token) == 3:
+def calculate_score(row, score, token: str, opponent_token: str):
+    str_row = ''.join(state for state in row)
+    if token*3 in str_row:
         score += 100
-    elif row.count(token) == 2 and row.count("_") == 1:
+    elif (token*2 + "_" in str_row) or ("_" + token*2 in str_row) or (token + "_" + token in str_row):
         score += 10
-    elif row.count(token) == 1 and row.count("_") == 2:
+    elif (token + "_"*2 in str_row) or ("_"*2 + token in str_row) or ("_" + token + "_" in str_row):
         score += 1
-    elif row.count(opponent_token) == 3:
+    elif opponent_token*3 in str_row:
         score -= 100
-    elif row.count(opponent_token) == 2 and row.count("_") == 1:
+    elif (opponent_token*2 + "_" in str_row) or ("_" + opponent_token*2 in str_row) or (opponent_token + "_" + opponent_token in str_row):
         score -= 10
-    elif row.count(opponent_token) == 1 and row.count("_") == 2:
+    elif (opponent_token + "_" * 2 in str_row) or ("_" * 2 + opponent_token in str_row) or ("_" + opponent_token + "_"):
         score -= 1
 
     # print("Current score: " + str(score))
@@ -41,6 +41,22 @@ def heuristic_function(board, token):
     score = calculate_score(diagonal1, score, token, opponent_token)
     score = calculate_score(diagonal2, score, token, opponent_token)
 
+    for i in range(1, board.size):
+        if board.size - i < 3:
+            break
+
+        col = 0
+        diagonal_under = []
+        diagonal_above = []
+        for j in range(i, board.size):
+            diagonal_under.append(board.states[j][col])
+            diagonal_above.append(board.states[col][j])
+            col += 1
+
+        score = calculate_score(diagonal_under, score, token, opponent_token)
+        score = calculate_score(diagonal_above, score, token, opponent_token)
+
+    print("Score: " + str(score))
     return score
 
 
@@ -107,12 +123,16 @@ def simple_heuristic(board, token):
             break
 
         col = 0
-        diagonal = []
+        diagonal_under = []
+        diagonal_above = []
         for j in range(i, board.size):
-            diagonal.append(board.states[col][j])
+            diagonal_under.append(board.states[j][col])
+            diagonal_above.append(board.states[col][j])
             col += 1
 
-        str_row = ''.join(state for state in diagonal)
+        str_row = ''.join(state for state in diagonal_under)
+        x_wins, o_wins = update_wins_counter(str_row, x_wins, o_wins)
+        str_row = ''.join(state for state in diagonal_above)
         x_wins, o_wins = update_wins_counter(str_row, x_wins, o_wins)
 
     if token == "x":
