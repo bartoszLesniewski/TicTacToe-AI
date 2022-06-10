@@ -3,15 +3,15 @@ import math
 import random
 
 from AI_type import AI_type
-from heuristics import heuristic_function
 from player import Player
 
 
 class AIPlayer(Player):
-    def __init__(self, board, token, ai_type, max_depth):
+    def __init__(self, board, token, ai_type, max_depth, heuristic):
         super().__init__(board, token)
         self.ai_type = ai_type
         self.max_depth = max_depth
+        self.heuristic = heuristic
 
     def move(self):
         move = None
@@ -42,7 +42,7 @@ class AIPlayer(Player):
                 return -math.inf, None
 
         if depth == 0:
-            return heuristic_function(board, self.token), None
+            return self.heuristic(board, self.token), None
             # return -1, None
 
         best_score = -math.inf if maximizingPlayer else math.inf
@@ -50,15 +50,15 @@ class AIPlayer(Player):
 
         for move in board.get_possible_moves():
             new_board = copy.deepcopy(board)
-            new_board.states[move[0]][move[1]] = self.token if maximizingPlayer else self.get_opponent_token()
+            new_board.states[move[0]][move[1]] = (self.token if maximizingPlayer else self.get_opponent_token())
             score = self.minimax(new_board, depth-1, not maximizingPlayer)[0]
 
             if maximizingPlayer:
-                if score > best_score:
+                if score > best_score or best_move is None:
                     best_score = score
                     best_move = move
             else:
-                if score < best_score:
+                if score < best_score or best_move is None:
                     best_score = score
                     best_move = move
 
@@ -75,7 +75,7 @@ class AIPlayer(Player):
                 return -math.inf, None
 
         if depth == 0:
-            return heuristic_function(board, self.token), None
+            return self.heuristic(board, self.token), None
             # return -1, None
 
         best_score = -math.inf if maximizingPlayer else math.inf
@@ -87,14 +87,14 @@ class AIPlayer(Player):
             score = self.alpha_beta(new_board, depth-1, not maximizingPlayer, alpha, beta)[0]
 
             if maximizingPlayer:
-                if score > best_score:
+                if score > best_score or best_move is None:
                     best_score = score
                     best_move = move
                 alpha = max(alpha, best_score)
                 if alpha >= beta:
                     break
             else:
-                if score < best_score:
+                if score < best_score or best_move is None:
                     best_score = score
                     best_move = move
 

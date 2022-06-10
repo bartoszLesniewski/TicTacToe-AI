@@ -1,3 +1,4 @@
+# works propoerly only for 3x3 board, for larger sizes always returns 0 or -100
 def calculate_score(row, score, token, opponent_token):
     if row.count(token) == 3:
         score += 100
@@ -41,3 +42,9 @@ def heuristic_function(board, token):
     score = calculate_score(diagonal2, score, token, opponent_token)
 
     return score
+
+
+# (number of lines where X can win) - (number of lines where O can win)
+def basic_heuristic(board, token):
+    pass
+

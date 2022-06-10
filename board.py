@@ -21,12 +21,13 @@ class Board:
                 print()
 
     def check_for_end(self):
-        # check for win
+        # check for win in row
         for i, row in enumerate(self.states):
             result = self.check_states(row)
             if result[0]:
                 return result
 
+            # check for win in column
             column = []
             for j in range(self.size):
                 column.append(self.states[j][i])
@@ -34,17 +35,48 @@ class Board:
             if result[0]:
                 return result
 
-            left_diagonal = []
-            for j in range(self.size):
-                left_diagonal.append(self.states[j][j])
-            result = self.check_states(left_diagonal)
+        # check for win in main diagonals
+        left_diagonal = []
+        for j in range(self.size):
+            left_diagonal.append(self.states[j][j])
+        result = self.check_states(left_diagonal)
+        if result[0]:
+            return result
+
+        right_diagonal = []
+        for j in range(self.size):
+            right_diagonal.append(self.states[j][self.size - j - 1])
+        result = self.check_states(right_diagonal)
+        if result[0]:
+            return result
+
+        # check for win in diagonals under the main diagonal (for larger sizes)
+        for i in range(1, self.size):
+            if self.size - i < 3:
+                break
+
+            col = 0
+            diagonal = []
+            for j in range(i, self.size):
+                diagonal.append(self.states[j][col])
+                col += 1
+
+            result = self.check_states(diagonal)
             if result[0]:
                 return result
 
-            right_diagonal = []
-            for j in range(self.size):
-                right_diagonal.append(self.states[j][self.size - j - 1])
-            result = self.check_states(right_diagonal)
+        # check for win in diagonals above the main diagonal (for larger sizes)
+        for i in range(1, self.size):
+            if self.size - i < 3:
+                break
+
+            col = 0
+            diagonal = []
+            for j in range(i, self.size):
+                diagonal.append(self.states[col][j])
+                col += 1
+
+            result = self.check_states(diagonal)
             if result[0]:
                 return result
 
@@ -57,9 +89,9 @@ class Board:
 
     @staticmethod
     def check_states(states):
-        if states == ["x", "x", "x"]:
+        if 'xxx' in ''.join(state for state in states):
             return True, "x"
-        elif states == ["o", "o", "o"]:
+        elif 'ooo' in ''.join(state for state in states):
             return True, "o"
 
         return False, None
