@@ -2,6 +2,7 @@ import copy
 import math
 import random
 
+from heuristics import heuristic_function
 from human_player import Player
 
 
@@ -19,48 +20,6 @@ class AIPlayer(Player):
             move = self.minimax(self.board, 1, True)[1]
             self.make_move(move)
 
-    def heuristic_function(self, board):
-        score = 0
-        if self.token == "x":
-            opponent_token = "o"
-        else:
-            opponent_token = "x"
-
-        for row in board.states:
-            score = self.calculate_score(row, score, opponent_token)
-        for i in range(board.size):
-            column = []
-            for j in range(board.size):
-                column.append(board.states[j][i])
-            score = self.calculate_score(column, score, opponent_token)
-
-        diagonal1 = []
-        diagonal2 = []
-        for i in range(board.size):
-            diagonal1.append(board.states[i][i])
-            diagonal2.append(board.states[i][board.size - i - 1])
-
-        score = self.calculate_score(diagonal1, score, opponent_token)
-        score = self.calculate_score(diagonal2, score, opponent_token)
-
-        return score
-
-    def calculate_score(self, row, score, opponent_token):
-        if row.count(self.token) == 3:
-            score += 100
-        elif row.count(self.token) == 2 and row.count("_") == 1:
-            score += 10
-        elif row.count(self.token) == 1 and row.count("_") == 2:
-            score += 1
-        elif row.count(opponent_token) == 3:
-            score -= 100
-        elif row.count(opponent_token) == 2 and row.count("_") == 1:
-            score -= 10
-        elif row.count(opponent_token) == 1 and row.count("_") == 2:
-            score -= 1
-
-        return score
-
     def minimax(self, board, depth=2, maximizingPlayer=True): #, alpha=-math.inf, beta=math.inf):
         result = board.check_for_end()
         if result[0]:
@@ -72,7 +31,7 @@ class AIPlayer(Player):
                 return -math.inf, None
 
         if depth == 0:
-            return self.heuristic_function(board), None
+            return heuristic_function(board, self.token), None
             # return -1, None
 
         best_score = -math.inf if maximizingPlayer else math.inf
