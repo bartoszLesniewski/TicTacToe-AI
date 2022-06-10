@@ -40,4 +40,3 @@ def heuristic_function(board, token):
     score = calculate_score(diagonal2, score, token, opponent_token)
 
     return score
-
