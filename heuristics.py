@@ -12,6 +12,7 @@ def calculate_score(row, score, token, opponent_token):
     elif row.count(opponent_token) == 1 and row.count("_") == 2:
         score -= 1
 
+    # print("Current score: " + str(score))
     return score
 
 

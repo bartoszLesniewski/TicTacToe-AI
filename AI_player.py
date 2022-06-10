@@ -21,9 +21,15 @@ class AIPlayer(Player):
         elif self.ai_type == AI_type.MINIMAX:
             move = self.minimax(self.board, self.max_depth)[1]
         elif self.ai_type == AI_type.ALPHA_BETA:
-            move = self.minimax(self.board, self.max_depth)[1]
+            move = self.alpha_beta(self.board, self.max_depth)[1]
 
         self.make_move(move)
+
+    def get_opponent_token(self):
+        if self.token == "x":
+            return "o"
+        else:
+            return "x"
 
     def minimax(self, board, depth=2, maximizingPlayer=True):
         result = board.check_for_end()
@@ -44,7 +50,7 @@ class AIPlayer(Player):
 
         for move in board.get_possible_moves():
             new_board = copy.deepcopy(board)
-            new_board.states[move[0]][move[1]] = "o" if maximizingPlayer else "x"
+            new_board.states[move[0]][move[1]] = self.token if maximizingPlayer else self.get_opponent_token()
             score = self.minimax(new_board, depth-1, not maximizingPlayer)[0]
 
             if maximizingPlayer:
