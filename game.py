@@ -1,20 +1,15 @@
-from AI_player import AIPlayer
-from board import Board
-from player import Player
-
-
 class Game:
-    def __init__(self):
-        self.board = Board(3)
-        self.player = Player(self.board, "x")
-        self.ai_player = AIPlayer(self.board, "o", "MEDIUM")
-        self.current_player = self.player
+    def __init__(self, board, player1, player2):
+        self.board = board
+        self.player1 = player1
+        self.player2 = player2
+        self.current_player = self.player1
         self.winner = None
 
     def play(self):
         while True:
-            print("======= YOU: " + self.player.token + " | AI Player: " + self.ai_player.token + " =======")
-            print("AI Player's move..." if self.current_player == self.ai_player else "Your move...")
+            print("======= PLAYER 1: " + self.player1.token + " | PLAYER 2: " + self.player2.token + " =======")
+
             self.board.draw()
             self.current_player.move()
 
@@ -28,7 +23,7 @@ class Game:
         self.show_result()
 
     def switch_player(self):
-        self.current_player = self.ai_player if self.current_player == self.player else self.player
+        self.current_player = self.player2 if self.current_player == self.player1 else self.player1
 
     def show_result(self):
         self.board.draw()

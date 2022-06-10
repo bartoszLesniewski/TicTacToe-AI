@@ -4,6 +4,7 @@ class Player:
         self.token = token
 
     def move(self):
+        print("Your move...")
         while True:
             str_position = input("Enter the position on which you want to make a move: ")
             str_position = str_position.split()

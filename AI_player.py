@@ -2,7 +2,7 @@ import copy
 import math
 import random
 
-from player import Player
+from human_player import Player
 
 
 class AIPlayer(Player):
