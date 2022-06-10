@@ -7,7 +7,7 @@ from player import Player
 
 board = Board(3)
 human_player = Player(board, "x")
-ai_player = AIPlayer(board, "o", AI_type.MINIMAX, 2, heuristics.heuristic_function)
+ai_player = AIPlayer(board, "o", AI_type.MINIMAX, 3, heuristics.extended_heuristic)
 
 game = Game(board, human_player, ai_player)
 game.play()
