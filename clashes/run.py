@@ -6,7 +6,7 @@ from pathlib import Path
 
 from rich.console import Group
 from rich.live import Live
-from rich.progress import Progress
+from rich.progress import MofNCompleteColumn, Progress
 import torch
 
 from AI_player import AIPlayer
@@ -22,10 +22,11 @@ BOARD_SIZE = 3
 class Runner:
     SCALES = [(1.0, "sec"), (1e-3, "msec"), (1e-6, "usec"), (1e-9, "nsec")]
 
-    def __init__(self, player_x, player_o, *, game_count=1000):
+    def __init__(self, player_x, player_o, global_progress, *, game_count=1000):
         self.player_x = player_x
         self.player_o = player_o
         self.game_count = game_count
+        self.global_progress = global_progress
         self.clear()
 
     def clear(self):
@@ -70,7 +71,7 @@ class Runner:
             f"draws:  {self.get_count_string(self.draws)}\n"
         )
         if show_progress:
-            return Group(text, self.progress)
+            return Group(text, self.progress, self.global_progress)
         text += f"x timings: {self.get_average_string(self.x_timings)}\n"
         text += f"o timings: {self.get_average_string(self.o_timings)}\n"
         return text
@@ -117,6 +118,10 @@ with torch.no_grad():
         *(AIPlayer(board, "o", AI_type.MINIMAX, 3, func) for func in functions),
         *(AIPlayer(board, "o", AI_type.ALPHA_BETA, 1, func) for func in functions),
     ]
-    for x_player, o_player in itertools.permutations(players, 2):
-        runner = Runner(x_player, o_player)
+    global_progress = Progress(*Progress.get_default_columns(), MofNCompleteColumn())
+    for x_player, o_player in global_progress.track(
+        list(itertools.permutations(players, 2)),
+        description="Total".ljust(10),
+    ):
+        runner = Runner(x_player, o_player, global_progress)
         runner.play_games()
