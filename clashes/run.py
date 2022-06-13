@@ -9,11 +9,11 @@ from rich.live import Live
 from rich.progress import Progress
 import torch
 
-import heuristics
 from AI_player import AIPlayer
 from AI_type import AI_type
 from board import Board
 from game import Game
+from heuristics import *
 from neural_network import *
 
 BOARD_SIZE = 3
@@ -110,11 +110,12 @@ nn = NeuralNetwork.from_state_dict(
 )
 board = Board(BOARD_SIZE)
 with torch.no_grad():
+    functions = [simple_heuristic, extended_heuristic, advanced_heuristic]
     players = [
         AIPlayer(board, "o", AI_type.NEURAL_NETWORK, nn=nn),
-        AIPlayer(board, "x", AI_type.RANDOM),
-        AIPlayer(board, "o", AI_type.MINIMAX, 3, heuristics.extended_heuristic),
-        AIPlayer(board, "o", AI_type.ALPHA_BETA, 1, heuristics.extended_heuristic),
+        AIPlayer(board, "o", AI_type.RANDOM),
+        *(AIPlayer(board, "o", AI_type.MINIMAX, 3, func) for func in functions),
+        *(AIPlayer(board, "o", AI_type.ALPHA_BETA, 1, func) for func in functions),
     ]
     for x_player, o_player in itertools.permutations(players, 2):
         runner = Runner(x_player, o_player)

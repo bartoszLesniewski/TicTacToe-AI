@@ -56,7 +56,6 @@ def advanced_heuristic(board, token):
         score = calculate_score(diagonal_under, score, token, opponent_token)
         score = calculate_score(diagonal_above, score, token, opponent_token)
 
-    print("Score: " + str(score))
     return score
 
 
