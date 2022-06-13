@@ -1,17 +1,25 @@
 import copy
 import math
 import random
+from collections import deque
+
+import torch
 
 from AI_type import AI_type
 from player import Player
+from neural_network import InvalidGameState
 
 
 class AIPlayer(Player):
-    def __init__(self, board, token, ai_type, max_depth, heuristic):
+    def __init__(self, board, token, ai_type, max_depth=None, heuristic=None, nn=None, training=False):
         super().__init__(board, token)
         self.ai_type = ai_type
         self.max_depth = max_depth
         self.heuristic = heuristic
+        self.nn = nn
+        self.training = training
+        self.epsilon = None
+        self.move_history = deque()
 
     def move(self):
         move = None
@@ -22,6 +30,8 @@ class AIPlayer(Player):
             move = self.minimax(self.board, self.max_depth)[1]
         elif self.ai_type == AI_type.ALPHA_BETA:
             move = self.alpha_beta(self.board, self.max_depth)[1]
+        elif self.ai_type == AI_type.NEURAL_NETWORK:
+            move = self.neural_network(self.board)
 
         self.make_move(move)
 
@@ -103,3 +113,32 @@ class AIPlayer(Player):
                     break
 
         return best_score, best_move
+
+    def neural_network(self, board):
+        if self.training:
+            move_idx = self.choose_nn_move(board)
+            self.move_history.appendleft((board, move_idx))
+        else:
+            move_idx = self.choose_valid_nn_move(board)
+
+        move = (move_idx // board.size, move_idx % board.size)
+        if self.training and move not in board.get_possible_moves():
+            raise InvalidGameState
+
+        return move
+
+    def choose_nn_move(self, board):
+        if self.epsilon > 0:
+            if random.random() < self.epsilon:
+                return random.randrange(board.size * board.size)
+
+        with torch.no_grad():
+            return torch.argmax(self.nn.policy_network(board.tensor)).item()
+
+    def choose_valid_nn_move(self, board):
+        q_values = self.nn.target_network(board.tensor)
+        valid_q_values = [
+            (x * board.size + y, q_values[x * board.size + y].item())
+            for x, y in self.board.get_possible_moves()
+        ]
+        return max(valid_q_values, key=lambda tup: tup[1])[0]

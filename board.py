@@ -1,7 +1,17 @@
+import torch
+
+
 class Board:
+    SYMBOLS = {"_": 0, "x": 1, "o": -1}
+
     def __init__(self, size):
         self.size = size
         self.states = [["_" for _ in range(size)] for _ in range(size)]
+
+    @property
+    def tensor(self):
+        data = [self.SYMBOLS[symbol] for row in self.states for symbol in row]
+        return torch.tensor(data, dtype=torch.float)
 
     def draw(self):
         for i, row in enumerate(self.states):
@@ -94,3 +104,11 @@ class Board:
                 if state == "_":
                     possible_moves.append((i, j))
         return possible_moves
+
+    def get_invalid_moves(self):
+        invalid_moves = []
+        for i, row in enumerate(self.states):
+            for j, state in enumerate(row):
+                if state != "_":
+                    invalid_moves.append((i, j))
+        return invalid_moves
