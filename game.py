@@ -1,3 +1,6 @@
+import time
+
+
 class Game:
     def __init__(self, board, player1, player2, print_gameplay=True):
         self.board = board
@@ -6,6 +9,8 @@ class Game:
         self.current_player = self.player1
         self.winner = None
         self.print_gameplay = print_gameplay
+        self.x_timings = []
+        self.o_timings = []
 
     def play(self):
         while True:
@@ -13,7 +18,13 @@ class Game:
                 print("======= PLAYER 1: " + self.player1.token + " | PLAYER 2: " + self.player2.token + " =======")
                 self.board.draw()
 
+            start = time.monotonic()
             self.current_player.move()
+            stop = time.monotonic()
+            if self.current_player.token == 'x':
+                self.x_timings.append(stop-start)
+            else:
+                self.o_timings.append(stop-start)
 
             result = self.board.check_for_end()
             if result[0]:

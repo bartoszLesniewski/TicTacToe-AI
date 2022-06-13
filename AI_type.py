@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class AI_type(Enum):
-    MINIMAX = "minimax",
-    ALPHA_BETA = "alpha-beta",
-    RANDOM = "random"
-    NEURAL_NETWORK = "neural_network"
+    MINIMAX = "Minimax"
+    ALPHA_BETA = "Alpha-beta"
+    RANDOM = "Random"
+    NEURAL_NETWORK = "Neural Network"

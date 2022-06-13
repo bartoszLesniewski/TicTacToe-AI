@@ -21,6 +21,12 @@ class AIPlayer(Player):
         self.epsilon = None
         self.move_history = deque()
 
+    @property
+    def name(self):
+        if self.heuristic is None:
+            return self.ai_type.value
+        return f"{self.ai_type.value} with {self.heuristic.__name__} heuristic"
+
     def move(self):
         move = None
         if self.ai_type == AI_type.RANDOM:
