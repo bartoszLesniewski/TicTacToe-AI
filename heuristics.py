@@ -17,7 +17,7 @@ def calculate_score(row, score, token: str, opponent_token: str):
     return score
 
 
-def advanced_heuristic(board, token):
+def advanced_heuristic(previous_board, board, move, token):
     score = 0
     if token == "x":
         opponent_token = "o"
@@ -71,7 +71,7 @@ def update_wins_counter(row, x_wins, o_wins):
 
 
 # (number of lines where X can win) - (number of lines where O can win)
-def simple_heuristic(board, token):
+def simple_heuristic(previous_board, board, move, token):
     x_wins = 0
     o_wins = 0
 
@@ -145,7 +145,7 @@ O1 is the number of lines with 1 O and 2 blanks
 O2 is the number of lines with 2 O's and a blank """
 
 
-def extended_heuristic(board, token):
+def extended_heuristic(previous_board, board, move, token):
     if token == "x":
         opponent_token = "o"
     else:

@@ -1,6 +1,7 @@
 import itertools
 import math
 import random
+import sys
 import time
 from pathlib import Path
 
@@ -17,6 +18,11 @@ from heuristics import *
 from neural_network import *
 
 BOARD_SIZE = 3
+
+# allow reproducing results
+seed = time.time_ns() if len(sys.argv) < 2 else int(sys.argv[1])
+random.seed(seed)
+print(f"Random seed: {seed}")
 
 
 class Runner:
@@ -112,15 +118,17 @@ nn = NeuralNetwork.from_state_dict(
 board = Board(BOARD_SIZE)
 with torch.no_grad():
     functions = [simple_heuristic, extended_heuristic, advanced_heuristic]
+    nn_player = AIPlayer(board, "o", AI_type.ALPHA_BETA, 2, nn=nn)
+    nn_player.heuristic = nn_player.neural_network_heuristic
     players = [
-        AIPlayer(board, "o", AI_type.NEURAL_NETWORK, nn=nn),
+        nn_player,
         AIPlayer(board, "o", AI_type.RANDOM),
-        *(AIPlayer(board, "o", AI_type.MINIMAX, 3, func) for func in functions),
-        *(AIPlayer(board, "o", AI_type.ALPHA_BETA, 1, func) for func in functions),
+        *(AIPlayer(board, "o", AI_type.MINIMAX, 2, func) for func in functions),
+        *(AIPlayer(board, "o", AI_type.ALPHA_BETA, 2, func) for func in functions),
     ]
     global_progress = Progress(*Progress.get_default_columns(), MofNCompleteColumn())
     for x_player, o_player in global_progress.track(
-        list(itertools.permutations(players, 2)),
+        list(itertools.product(players, repeat=2)),
         description="Total".ljust(10),
     ):
         runner = Runner(x_player, o_player, global_progress)

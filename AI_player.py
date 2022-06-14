@@ -47,7 +47,7 @@ class AIPlayer(Player):
         else:
             return "x"
 
-    def minimax(self, board, depth=2, maximizingPlayer=True):
+    def minimax(self, board, depth=2, maximizingPlayer=True, previous_board=None, previous_move=None):
         result = board.check_for_end()
         if result[0]:
             if result[1] == self.token:
@@ -58,7 +58,7 @@ class AIPlayer(Player):
                 return -math.inf, None
 
         if depth == 0:
-            return self.heuristic(board, self.token), None
+            return self.heuristic(previous_board, board, previous_move, self.token), None
             # return -1, None
 
         best_score = -math.inf if maximizingPlayer else math.inf
@@ -67,7 +67,7 @@ class AIPlayer(Player):
         for move in board.get_possible_moves():
             new_board = copy.deepcopy(board)
             new_board.states[move[0]][move[1]] = (self.token if maximizingPlayer else self.get_opponent_token())
-            score = self.minimax(new_board, depth-1, not maximizingPlayer)[0]
+            score = self.minimax(new_board, depth-1, not maximizingPlayer, board, move)[0]
 
             if maximizingPlayer:
                 if score > best_score or best_move is None:
@@ -80,7 +80,7 @@ class AIPlayer(Player):
 
         return best_score, best_move
 
-    def alpha_beta(self, board, depth=2, maximizingPlayer=True, alpha=-math.inf, beta=math.inf):
+    def alpha_beta(self, board, depth=2, maximizingPlayer=True, alpha=-math.inf, beta=math.inf, previous_board=None, previous_move=None):
         result = board.check_for_end()
         if result[0]:
             if result[1] == self.token:
@@ -91,7 +91,7 @@ class AIPlayer(Player):
                 return -math.inf, None
 
         if depth == 0:
-            return self.heuristic(board, self.token), None
+            return self.heuristic(previous_board, board, previous_move, self.token), None
             # return -1, None
 
         best_score = -math.inf if maximizingPlayer else math.inf
@@ -100,7 +100,7 @@ class AIPlayer(Player):
         for move in board.get_possible_moves():
             new_board = copy.deepcopy(board)
             new_board.states[move[0]][move[1]] = "o" if maximizingPlayer else "x"
-            score = self.alpha_beta(new_board, depth-1, not maximizingPlayer, alpha, beta)[0]
+            score = self.alpha_beta(new_board, depth-1, not maximizingPlayer, alpha, beta, board, move)[0]
 
             if maximizingPlayer:
                 if score > best_score or best_move is None:
@@ -119,6 +119,11 @@ class AIPlayer(Player):
                     break
 
         return best_score, best_move
+
+    def neural_network_heuristic(self, previous_board, board, move, token):
+        q_values = self.nn.target_network(previous_board.tensor)
+        x, y = move
+        return q_values[x * board.size + y].item()
 
     def neural_network(self, board):
         if self.training:

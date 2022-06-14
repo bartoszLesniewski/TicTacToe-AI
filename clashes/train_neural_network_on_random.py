@@ -1,4 +1,5 @@
 import random
+import sys
 import time
 from pathlib import Path
 
@@ -17,7 +18,7 @@ BOARD_SIZE = 3
 
 
 # allow reproducing results
-seed = time.time_ns()
+seed = time.time_ns() if len(sys.argv) < 2 else int(sys.argv[1])
 random.seed(seed)
 print(f"Random seed: {seed}")
 
