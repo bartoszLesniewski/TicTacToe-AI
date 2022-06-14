@@ -1,0 +1,98 @@
+Random seed: 1655168693098456300
+Alpha-beta with neural_network_heuristic heuristic VS. Alpha-beta with neural_network_heuristic heuristic
+x wins:   0.00% (0)
+o wins: 100.00% (1000)
+draws:    0.00% (0)
+x timings: 12.9 msec +- 11.2 msec per game (mean +- std. dev. of 1000 games)
+o timings: 7.83 msec +- 8.76 msec per game (mean +- std. dev. of 1000 games)
+
+Random VS. Random
+x wins:  58.30% (583)
+o wins:  28.60% (286)
+draws:   13.10% (131)
+x timings: 16 usec +- 506 usec per game (mean +- std. dev. of 1000 games)
+o timings: 0 nsec +- 0 nsec per game (mean +- std. dev. of 1000 games)
+
+Minimax with simple_heuristic heuristic VS. Minimax with simple_heuristic heuristic
+x wins: 100.00% (1000)
+o wins:   0.00% (0)
+draws:    0.00% (0)
+x timings: 983 usec +- 3.79 msec per game (mean +- std. dev. of 1000 games)
+o timings: 969 usec +- 3.83 msec per game (mean +- std. dev. of 1000 games)
+
+Minimax with extended_heuristic heuristic VS. Minimax with extended_heuristic heuristic
+x wins: 100.00% (1000)
+o wins:   0.00% (0)
+draws:    0.00% (0)
+x timings: 1.11 msec +- 4 msec per game (mean +- std. dev. of 1000 games)
+o timings: 706 usec +- 3.25 msec per game (mean +- std. dev. of 1000 games)
+
+Minimax with advanced_heuristic heuristic VS. Minimax with advanced_heuristic heuristic
+x wins:   0.00% (0)
+o wins:   0.00% (0)
+draws:  100.00% (1000)
+x timings: 1.44 msec +- 4.51 msec per game (mean +- std. dev. of 1000 games)
+o timings: 1.32 msec +- 4.35 msec per game (mean +- std. dev. of 1000 games)
+
+Alpha-beta with simple_heuristic heuristic VS. Alpha-beta with simple_heuristic heuristic
+x wins:   0.00% (0)
+o wins:   0.00% (0)
+draws:  100.00% (1000)
+x timings: 1.39 msec +- 4.62 msec per game (mean +- std. dev. of 1000 games)
+o timings: 1.38 msec +- 4.64 msec per game (mean +- std. dev. of 1000 games)
+
+Alpha-beta with extended_heuristic heuristic VS. Alpha-beta with extended_heuristic heuristic
+x wins: 100.00% (1000)
+o wins:   0.00% (0)
+draws:    0.00% (0)
+x timings: 1.72 msec +- 5.18 msec per game (mean +- std. dev. of 1000 games)
+o timings: 1.33 msec +- 4.41 msec per game (mean +- std. dev. of 1000 games)
+
+Alpha-beta with advanced_heuristic heuristic VS. Alpha-beta with advanced_heuristic heuristic
+x wins:   0.00% (0)
+o wins: 100.00% (1000)
+draws:    0.00% (0)
+x timings: 1.36 msec +- 4.52 msec per game (mean +- std. dev. of 1000 games)
+o timings: 1.08 msec +- 3.96 msec per game (mean +- std. dev. of 1000 games)
+
+Minimax with simple_heuristic heuristic VS. Minimax with simple_heuristic heuristic
+x wins:   0.00% (0)
+o wins:   0.00% (0)
+draws:  100.00% (1000)
+x timings: 6.31 msec +- 7.86 msec per game (mean +- std. dev. of 1000 games)
+o timings: 5.22 msec +- 7.51 msec per game (mean +- std. dev. of 1000 games)
+
+Minimax with extended_heuristic heuristic VS. Minimax with extended_heuristic heuristic
+x wins: 100.00% (1000)
+o wins:   0.00% (0)
+draws:    0.00% (0)
+x timings: 7.67 msec +- 7.88 msec per game (mean +- std. dev. of 1000 games)
+o timings: 5.47 msec +- 7.62 msec per game (mean +- std. dev. of 1000 games)
+
+Minimax with advanced_heuristic heuristic VS. Minimax with advanced_heuristic heuristic
+x wins:   0.00% (0)
+o wins:   0.00% (0)
+draws:  100.00% (1000)
+x timings: 9.41 msec +- 9.21 msec per game (mean +- std. dev. of 1000 games)
+o timings: 6.55 msec +- 8.39 msec per game (mean +- std. dev. of 1000 games)
+
+Alpha-beta with simple_heuristic heuristic VS. Alpha-beta with simple_heuristic heuristic
+x wins:   0.00% (0)
+o wins: 100.00% (1000)
+draws:    0.00% (0)
+x timings: 2.81 msec +- 6.12 msec per game (mean +- std. dev. of 1000 games)
+o timings: 2.24 msec +- 5.53 msec per game (mean +- std. dev. of 1000 games)
+
+Alpha-beta with extended_heuristic heuristic VS. Alpha-beta with extended_heuristic heuristic
+x wins:   0.00% (0)
+o wins:   0.00% (0)
+draws:  100.00% (1000)
+x timings: 4.81 msec +- 7.28 msec per game (mean +- std. dev. of 1000 games)
+o timings: 3.13 msec +- 6.34 msec per game (mean +- std. dev. of 1000 games)
+
+Alpha-beta with advanced_heuristic heuristic VS. Alpha-beta with advanced_heuristic heuristic
+x wins:   0.00% (0)
+o wins: 100.00% (1000)
+draws:    0.00% (0)
+x timings: 5.33 msec +- 7.61 msec per game (mean +- std. dev. of 1000 games)
+o timings: 3.45 msec +- 6.55 msec per game (mean +- std. dev. of 1000 games)
