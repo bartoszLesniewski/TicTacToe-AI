@@ -1,3 +1,4 @@
+import copy
 import itertools
 import math
 import random
@@ -131,5 +132,7 @@ with torch.no_grad():
         list(itertools.product(players, repeat=2)),
         description="Total".ljust(10),
     ):
+        if x_player is o_player:
+            o_player = copy.copy(x_player)
         runner = Runner(x_player, o_player, global_progress)
         runner.play_games()
