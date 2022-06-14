@@ -23,14 +23,7 @@ random.seed(seed)
 print(f"Random seed: {seed}")
 
 board = Board(BOARD_SIZE)
-board.states = [
-    ["x", "o", "o"],
-    ["_", "x", "x"],
-    ["_", "_", "o"],
-]
 nn = NeuralNetwork(BOARD_SIZE, seed)
-with torch.no_grad():
-    q_values = nn.target_network(board.tensor)
 
 nn_player = AIPlayer(board, "x", AI_type.NEURAL_NETWORK, nn=nn, training=True)
 random_player = AIPlayer(board, "o", AI_type.RANDOM)
